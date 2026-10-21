@@ -1,0 +1,62 @@
+[
+ {
+  "directory": "/Users/useluss/Repos/COMP-2510-Review/midterm",
+  "arguments": [
+   "clang",
+   "-Wall",
+   "-Wextra",
+   "-O2",
+   "-std=c99",
+   "-Ibasics",
+   "-o",
+   "build/basics",
+   "basics/basics.c"
+  ],
+  "file": "basics/basics.c"
+ },
+ {
+  "directory": "/Users/useluss/Repos/COMP-2510-Review/midterm",
+  "arguments": [
+   "clang",
+   "-Wall",
+   "-Wextra",
+   "-O2",
+   "-std=c99",
+   "-Iarrays",
+   "-o",
+   "build/arrays",
+   "arrays/arrays.c"
+  ],
+  "file": "arrays/arrays.c"
+ },
+ {
+  "directory": "/Users/useluss/Repos/COMP-2510-Review/midterm",
+  "arguments": [
+   "clang",
+   "-Wall",
+   "-Wextra",
+   "-O2",
+   "-std=c99",
+   "-Ipointers",
+   "-o",
+   "build/pointers",
+   "pointers/pointers.c"
+  ],
+  "file": "pointers/pointers.c"
+ },
+ {
+  "directory": "/Users/useluss/Repos/COMP-2510-Review/midterm",
+  "arguments": [
+   "clang",
+   "-Wall",
+   "-Wextra",
+   "-O2",
+   "-std=c99",
+   "-Istrings",
+   "-o",
+   "build/strings",
+   "strings/strings.c"
+  ],
+  "file": "strings/strings.c"
+ }
+]
