@@ -7,7 +7,7 @@ To compile and run the different modules in midterm/ and final/ run the command:
 make run-<module-name>
 ```
 
-i.e. to run points module:
+i.e. to run pointers module:
 ```sh
 make run-pointers
 ```
