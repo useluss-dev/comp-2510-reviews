@@ -22,7 +22,7 @@ Each module will have some question where you are provided a function declaratio
 
 Both midterm/ and final/ have a markdown file with multiple choice questions titled `quiz.md`. Answers are provided with full explanations in `quiz_answers.md`.
 
-Both midterm/ and final/ also have `practice_test.md` these will be questions asking whether or not something is a runtime error, compile error, or no error with maybe some other questions thrown in. Answers will be provided in `practice_test_answers.md`.
+Both midterm/ and final/ also have `practice_test.md` these will be questions asking whether or not something is a runtime error, compile error, or no error with maybe some other questions thrown in. Answers will be provided in `practice_test_answers.md`. Do note, the in depth answers for this were largely made with AI, I made a lot of questions and writing out each answer myself would have taken hours. I did go through and fact check them to the best of my ability. If you notice any errors please let me know.
 
 > If you would like to use a proper markdown viewer there are many available
 > out there. If you don't know about any try out [obsidian](https://obsidian.md/) it's also good 
