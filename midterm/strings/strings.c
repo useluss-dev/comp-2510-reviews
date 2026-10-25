@@ -3,25 +3,28 @@
  * Is there a `String` type like in Java?
  *
  */
-#include "strings.h"
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-void string_basics(void) {
-    char color1[] = "blue";
-    char color2[] = {'b', 'l', 'u', 'e', '\0'};
-    const char *color3 = "blue";
+void shout(char s[]);
 
+/**
+ * Check your understanding on the basics of strings
+ */
+void string_basics(void) {
     /* Are these three the same string?
      *
      */
+    char color1[] = "blue";
+    char color2[] = {'b', 'l', 'u', 'e', '\0'};
+    const char *color3 = "blue";
     printf("%s %s %s\n", color1, color2, color3);
 
     char word[10] = "hi";
 
-    /* What do `strlen(word)` and `sizeof word` print?
+    /* What will `strlen(word)` and `sizeof word` print?
      *
      * Why are they different?
      *
@@ -50,8 +53,15 @@ void string_basics(void) {
     printf("sizeof 'a' = %zu, sizeof \"a\" = %zu\n\n", sizeof 'a', sizeof "a");
 }
 
+/**
+ * Check your understanding on functions for characters
+ */
 void character_handling(void) {
-    /* What do these return? Is it always 1 for true?
+    /* What do the functions `isdigit()` `isalpha()` and `isspace()` return?
+     *
+     * What do the functions `toupper()` and `tolower()` return?
+     *
+     * Why do `toupper()` and `tolower()` take integers and not chars?
      *
      */
     printf("isdigit('8') = %s, isdigit('#') = %s\n",
@@ -63,10 +73,30 @@ void character_handling(void) {
            toupper('u'), tolower('L'), toupper('7'));
 
     char text[] = "Hello, World 42";
+    /* Why can we pass `text[]` to `shout()` when `shout()` takes `char *s`
+     *
+     */
     shout(text);
     printf("%s\n\n", text);
 }
 
+/**
+ * Check your understanding on character manipulation
+ */
+void shout(char s[]) {
+    /* Why do we cast to `unsigned char` before calling `toupper`?
+     *
+     * Why does this change the caller's string without returning anything?
+     *
+     */
+    for (size_t i = 0; s[i] != '\0'; i++) {
+        s[i] = (char)toupper((unsigned char)s[i]);
+    }
+}
+
+/**
+ * Check your understanding on converting strings to other types
+ */
 void string_conversion(void) {
     printf("atoi(\"2593\") = %d\n", atoi("2593"));
     printf("atof(\"99.5\") = %.1f\n", atof("99.5"));
@@ -79,14 +109,17 @@ void string_conversion(void) {
     char *end;
     long value = strtol("-1234abc", &end, 10);
 
-    /* Why do we pass `&end` and not `end`?
+    /* Why do we pass `&end` and not `end` to `strtol()`?
      *
      */
     printf("strtol -> %ld, leftover: \"%s\"\n\n", value, end);
 }
 
+/**
+ * Check your understanding on formatting io
+ */
 void formatted_io(void) {
-    /* `fgets` keeps the newline. What do we do about it?
+    /* `line` has a new line character. What does strcspn do to get rid of it?
      *
      */
     char line[] = "hello\n";
@@ -114,6 +147,9 @@ void formatted_io(void) {
     printf("x = %d, y = %.3f, fields = %d\n\n", x, y, fields);
 }
 
+/**
+ * Check your understanding on copying and concatenating strings
+ */
 void copy_and_concatenate(void) {
     char source[] = "Happy Birthday to You";
     char full[25];
@@ -123,10 +159,11 @@ void copy_and_concatenate(void) {
 
     /* Is `part` a valid string after `strncpy`?
      *
-     * Why do we write the '\0' ourselves?
-     *
      */
     strncpy(part, source, 14);
+    /* Why do we have to add the '\0' to `part` ourselves?
+     *
+     */
     part[14] = '\0';
     printf("full = \"%s\", part = \"%s\"\n", full, part);
 
@@ -134,13 +171,14 @@ void copy_and_concatenate(void) {
 
     /* What would happen if `greeting` only had room for 10 characters?
      *
-     * Which character of "New Year" overwrites the old '\0'?
-     *
      */
     strcat(greeting, "New Year");
     printf("greeting = \"%s\"\n\n", greeting);
 }
 
+/**
+ * Check your understanding on comparing strings.
+ */
 void compare_strings(void) {
     const char *a = "Happy New Year";
     const char *b = "Happy Holidays";
@@ -166,7 +204,7 @@ void compare_strings(void) {
 
     /* Why can we not use `==` to compare strings?
      *
-     * What does it compare instead?
+     * What does `==` on strings compare instead?
      *
      */
     char x[] = "same";
@@ -178,6 +216,9 @@ void compare_strings(void) {
            px == py ? "equal" : "different");
 }
 
+/**
+ * Check your understanding on searching through strings
+ */
 void search_strings(void) {
     const char *text = "This is a test";
 
@@ -196,17 +237,24 @@ void search_strings(void) {
      */
     printf("'z' is %s\n", strchr(text, 'z') == NULL ? "NULL" : "found");
 
+    /* What does strstr do?
+     *
+     */
     const char *sub = strstr(text, "test");
     printf("\"test\" starts at index %td\n", sub - text);
 
     char sentence[] = "This is a sentence with 7 tokens";
 
-    /* Why must `sentence` be an array and not a `const char *`?
+    /* Why must `sentence` be an array and not a `const char *` when using
+     * `strtok`?
      *
      * Why do we pass NULL after the first call?
      *
      */
     printf("tokens:\n");
+    /* What does strtok do here?
+     *
+     */
     char *token = strtok(sentence, " ");
     while (token != NULL) {
         printf("  %s\n", token);
@@ -215,35 +263,9 @@ void search_strings(void) {
     printf("\n");
 }
 
-void memory_functions(void) {
-    char copy[17];
-
-    /* How is `memcpy` different from `strcpy`?
-     *
-     */
-    memcpy(copy, "Copy this string", 17);
-    printf("%s\n", copy);
-
-    char buf[] = "abcdef";
-
-    /* Why `memmove` and not `memcpy` here?
-     *
-     * What will `buf` be afterwards?
-     *
-     */
-    memmove(buf + 2, buf, 4);
-    printf("%s\n", buf);
-
-    char fill[15] = "BBBBBBBBBBBBBB";
-
-    /* What will this print?
-     *
-     * Does `memset` care about the '\0'?
-     *
-     */
-    memset(fill, 'b', 7);
-    printf("%s\n\n", fill);
-}
+/* Can you implement a recursive function that reverses a string?
+ */
+const char *reverse(char *s) { return s; }
 
 int main(void) {
     string_basics();
@@ -253,24 +275,10 @@ int main(void) {
     copy_and_concatenate();
     compare_strings();
     search_strings();
-    memory_functions();
 
-    // char test[] = "hello";
-    // reverse(test);
-    // printf("%s\n", test);
+    char test[] = "hello";
+    reverse(test);
+    printf("%s\n", test);
 
     return 0;
 }
-
-/* Why do we cast to `unsigned char` before calling `toupper`?
- *
- * Why does this change the caller's string without returning anything?
- */
-void shout(char s[]) {
-    for (size_t i = 0; s[i] != '\0'; i++) {
-        s[i] = (char)toupper((unsigned char)s[i]);
-    }
-}
-
-/* Let's implement a recursive reverse
- */

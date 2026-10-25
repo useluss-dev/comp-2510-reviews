@@ -3,11 +3,23 @@
  * Why do all pointers on one machine have the same size (on most machines...)?
  *
  */
-#include "pointers.h"
 #include <stdio.h>
 
+// Constants
 #define SIZE 5
 
+// Function declarations
+int apply(int (*op)(int, int), int x, int y);
+int min_int(int a, int b);
+int max_int(int a, int b);
+void swap(int *a, int *b);
+
+void half_by_value(int n) { n /= 2; }
+void half_by_reference(int *p) { *p /= 2; }
+
+/**
+ * Check your understanding on getting addresses and dereferencing pointers
+ */
 void address_and_dereference(void) {
     int n = 3;
     int *p = &n;
@@ -29,17 +41,11 @@ void address_and_dereference(void) {
      *
      */
     printf("after *q = 5: n = %d, *p = %d\n\n", n, *p);
-
-    /* Which of `a`, `b` and `c` are pointers?
-     *
-     * What do the sizes tell us?
-     *
-     */
-    char *a = NULL, b = 'b', *c = NULL;
-    printf("sizeof a = %zu, b = %zu, c = %zu\n\n", sizeof a, sizeof b,
-           sizeof c);
 }
 
+/**
+ * Check your understanding on pointer arithmetic
+ */
 void pointer_arithmetic(void) {
     int v[SIZE] = {10, 20, 30, 40, 50};
     int *p = v;
@@ -58,16 +64,9 @@ void pointer_arithmetic(void) {
     p++;
     printf("after p++:    *p = %d\n", *p);
 
-    int *end = &v[SIZE - 1];
-
-    /* Does `end - p` give us bytes or elements?
-     *
-     * What value will it be?
-     *
-     */
-    printf("end - p = %td\n", end - p);
-
     /* Are these two the same thing?
+     *
+     * Why?
      *
      */
     printf("p[1] = %d, *(p + 1) = %d\n", p[1], *(p + 1));
@@ -79,6 +78,9 @@ void pointer_arithmetic(void) {
     printf("\n");
 }
 
+/**
+ * Check your understanding on pass by reference
+ */
 void pass_by_reference(void) {
     int a = 4, b = 4;
 
@@ -89,25 +91,24 @@ void pass_by_reference(void) {
      *
      */
     printf("a = %d, b = %d\n", a, b);
+
     /*
-     * C is pass-by-value. So how can `half_by_reference` change `b`?
+     * In C functions are pass-by-value. So how can `half_by_reference` change
+     * `b`?
      *
      */
 
     int x = 1, y = 3;
-    swap(&x, &y);
-    printf("after swap: x = %d, y = %d\n", x, y);
-
-    /* A function can only return one value. How do we get two out?
+    /* Will this actually swap the variables or will they remain the same?
      *
      */
-    int smaller;
-    int bigger = max_min(7, 3, &smaller);
-    printf("bigger = %d, smaller = %d\n", bigger, smaller);
-
-    printf("peek(&x) = %d\n\n", peek(&x));
+    swap(&x, &y);
+    printf("after swap: x = %d, y = %d\n", x, y);
 }
 
+/**
+ * Check your understanding on the relationship between arrays and pointers
+ */
 void arrays_vs_pointers(void) {
     char array[] = "hello";
     const char *literal = "hello";
@@ -127,9 +128,9 @@ void arrays_vs_pointers(void) {
     /* Why is `other_str` not reassignable?
      *
      */
-    // char *const other_str = "hello";
+    char *const other_str = "hello";
     // other_str = "world";
-    // printf("other_str = %s\n", other_str);
+    printf("other_str = %s\n", other_str);
 
     /* Why are these two sizes different?
      *
@@ -138,6 +139,9 @@ void arrays_vs_pointers(void) {
            sizeof literal);
 }
 
+/**
+ * Check your understanding on function pointers
+ */
 void function_pointers(void) {
     int (*op)(int, int) = max_int;
 
@@ -155,6 +159,9 @@ void function_pointers(void) {
     printf("apply(max_int, 8, 5) = %d\n\n", apply(max_int, 8, 5));
 }
 
+/**
+ * Check your understanding on pointers to pointers
+ */
 void pointer_to_pointer(void) {
     int n = 3;
     int *p = &n;
@@ -173,6 +180,9 @@ void pointer_to_pointer(void) {
     printf("after **pp = 99: n = %d\n\n", n);
 }
 
+/**
+ * Check your understanding on operator precedence and incrementing pointers
+ */
 void increment_family(void) {
     int arr[4] = {10, 20, 30, 40};
     int *p = arr;
@@ -181,7 +191,6 @@ void increment_family(void) {
     /* https://en.cppreference.com/c/language/operator_precedence
      * For each of the next four lines:
      *   What is `r`?
-     *   Did the pointer move, or did the value change?
      *
      */
     r = *p++; // r is
@@ -202,13 +211,32 @@ void increment_family(void) {
     printf("r = *++p   -> r = %d, *p = %d, arr[0] = %d\n\n", r, *p, arr[0]);
 }
 
-/* Why does this get a copy of the number?
+/**
+ * Check your understanding on void pointers
  */
-void half_by_value(int n) { n /= 2; }
+void void_pointers(void) {
+    int number = 42;
+    double value = 3.14;
 
-void half_by_reference(int *p) { *p /= 2; }
+    /* What does `void *` tell us about `ptr`?
+     *
+     */
+    void *ptr = &number;
+    printf("number through void pointer: %d\n", *(int *)ptr);
+
+    /* Can ptr point to values of any type or only specific types?
+     *
+     */
+    ptr = &value;
+    printf("value through void pointer: %.2f\n", *(double *)ptr);
+
+    /* Why can't we write *ptr or ptr++ directly?
+     *
+     */
+}
 
 /* Why would `swap(int a, int b)` not work?
+ *
  */
 void swap(int *a, int *b) {
     int temp = *a;
@@ -216,28 +244,18 @@ void swap(int *a, int *b) {
     *b = temp;
 }
 
-int max_min(int a, int b, int *smaller) {
-    if (a > b) {
-        *smaller = b;
-        return a;
-    }
-    *smaller = a;
-    return b;
-}
-
 /* What does `const int *` promise?
  *
  * Can `p` itself still be reassigned?
  *
  * How is `int *const p` different?
+ *
  */
 int peek(const int *p) { return *p + 1; }
 
-int max_int(int a, int b) { return (a > b) ? a : b; }
-
-int min_int(int a, int b) { return (a < b) ? a : b; }
-
-int apply(int (*op)(int, int), int x, int y) { return op(x, y); }
+/* Can you implement getting a string length using pointers?
+ */
+int string_length(const char *s) { return 0; }
 
 int main(void) {
     address_and_dereference();
@@ -254,13 +272,14 @@ int main(void) {
      *
      */
     int *nothing = NULL;
-    printf("nothing is %s\n\n", nothing == NULL ? "NULL" : "not NULL");
-    // printf("%d\n", *nothing);
+    // uncomment it and see what happens...
+    // printf("Dereferenced null: %d\n\n", *nothing);
 
-    // printf("String length: %zu\n", string_length("hello"));
+    printf("Length of \"hello\": %d\n", string_length("hello"));
 
     return 0;
 }
 
-/* Let's implement string length using only pointers
- */
+int apply(int (*op)(int, int), int x, int y) { return op(x, y); }
+int min_int(int a, int b) { return a < b ? a : b; }
+int max_int(int a, int b) { return a > b ? a : b; }
